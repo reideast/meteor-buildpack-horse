@@ -229,3 +229,26 @@ echo "-----> Running extras"
 for file in `ls "$BUILDPACK_DIR"/extra | sort`; do
   . "$BUILDPACK_DIR"/extra/$file
 done
+
+echo "-----> Install ffmpeg"
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+VENDOR_DIR="vendor"
+DOWNLOAD_URL="https://github.com/craftsmen/heroku-ffmpeg-lame-bin/archive/1.0.0.tar.gz"
+
+echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
+
+cd $APP_CHECKOUT_DIR
+mkdir -p $VENDOR_DIR
+cd $VENDOR_DIR
+curl -L --silent $DOWNLOAD_URL | tar xz --strip-components=1
+
+echo "exporting PATH and LIBRARY_PATH" | indent
+
+PROFILE_PATH="$APP_CHECKOUT_DIR/.profile.d/ffmpeg-lame.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+echo 'export PATH="$PATH:/app/vendor/ffmpeg/bin:/app/vendor/lame/bin"' >> $PROFILE_PATH
+echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/vendor/ffmpeg/lib:/app/vendor/lame/lib"' >> $PROFILE_PATH
