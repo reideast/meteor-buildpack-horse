@@ -174,7 +174,7 @@ if [ -e "$APP_SOURCE_DIR"/package.json ]; then
   $METEOR_NPM install
 fi
 
-# Related to https://github.com/meteor/meteor/issues/2796 and 
+# Related to https://github.com/meteor/meteor/issues/2796 and
 # https://github.com/meteor/meteor/issues/2606.  Some packages only build their
 # assets at runtime, and thus they are not available for bundling unless meteor
 # has been launched.  To opt-in to this, set BUILDPACK_PRELAUNCH_METEOR=1.
