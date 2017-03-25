@@ -38,8 +38,8 @@ BUILDPACK_DIR=$(cd -P -- "$(dirname -- "$0")" && cd .. && pwd -P)
 APP_CHECKOUT_DIR=$1
 CACHE_DIR=$2
 if [ -n "${BUILDPACK_CLEAR_CACHE+1}" ]; then
-  echo "----> Clearing cache dir."
-  rm -rf "$CACHE_DIR"
+  echo "-----> Clearing cache dir."
+  rm -rf "$CACHE_DIR/*"
 fi
 
 #
@@ -252,3 +252,11 @@ PROFILE_PATH="$APP_CHECKOUT_DIR/.profile.d/ffmpeg-lame.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$PATH:/app/vendor/ffmpeg/bin:/app/vendor/lame/bin"' >> $PROFILE_PATH
 echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/vendor/ffmpeg/lib:/app/vendor/lame/lib"' >> $PROFILE_PATH
+
+#
+# Clear cache after build is done
+#
+if [ -n "${BUILDPACK_CLEAR_CACHE+1}" ]; then
+  echo "-----> Clearing cache dir."
+  rm -rf $METEOR_DIR
+fi
